@@ -6,6 +6,9 @@
   Aguirre Olvera Jose Manuel
   Sistemas Operativos 2*/
 //estrucutura para listas ligadas
+
+int ram[79], mapabits[7][79], recorrido[79], hdd[79];
+
 typedef struct nodo{
 	char nombreproceso[10];
 	int empieza_tam;
@@ -46,7 +49,7 @@ void menuB(){
 
 int main(int argc, char const *argv[])
 {
-	int ram[79], mapabits[7][79], recorrido[79], hdd[79];	
+		
 
 	return 0;
 }
