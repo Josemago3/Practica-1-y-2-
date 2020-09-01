@@ -25,8 +25,52 @@ void menuA(){
 		printf("Menu\n");
 		printf("1.Crear proceso\n");
 		printf("2. Eliminar proceso\n");
-		printf("3. Visualizar RAM\n");
-		printf("4. Representación RAM disponible\n");
+		printf("3. Representación RAM disponible\n");
+		printf("4. Salir\n");
+		scanf("%d",&op);
+		switch(op){
+			case 1: printf("Creando el proceso %d \n", i); //piensa si mejor int o char //scanf("%s", &);
+					i++;
+					break;//<--- es este  ^
+			case 2:
+					break;
+			case 3:
+					printf("Menu\n");
+					printf("1 Mapa de Bits");
+					printf("2 Lista libres");
+					scanf("%d",&op);
+					switch(op){
+						case 1:
+								mapits();//Llama a función mapa de beats
+								break;
+						case 2: 
+								lises();//Llama a función Lista Libres
+								break;		
+					}
+					break;
+			case 4: 
+					break;		
+		}
+	}while(op!=4);
+	return;
+}
+
+
+// Sabes como se tiene que visualizar la memoria??? 
+
+/*	Pero en teams esa opción es la 5 
+
+Va entonces deja y quita una opcion
+
+*/
+void menuB(){
+	int op, i=0 ;
+	do{
+		printf("Menu\n");
+		printf("1.Crear proceso\n");
+		printf("2. Eliminar proceso\n");
+		printf("3. Representación RAM disponible\n");
+		printf("4. Intercambio\n");
 		printf("5. Salir\n");
 		scanf("%d",&op);
 		switch(op){
@@ -36,9 +80,6 @@ void menuA(){
 			case 2:
 					break;
 			case 3:
-					vismem();
-					break;
-			case 4:
 					printf("Menu\n");
 					printf("1 Mapa de Bits");
 					printf("2 Lista libres");
@@ -52,57 +93,13 @@ void menuA(){
 								break;		
 					}
 					break;
-			case 5: 
-					break;		
+			case 4: 
+					break;
+			case 5:
+					break;				
 		}
 	}while(op!=5);
 	return;
-}
-void menuB(){
-	int op, i=0 ;
-	do{
-		printf("Menu\n");
-		printf("1.Crear proceso\n");
-		printf("2. Eliminar proceso\n");
-		printf("3. Visualizar RAM\n");
-		printf("4. Representación RAM disponible\n");
-		printf("5. Salir\n");
-		scanf("%d",&op);
-		switch(op){
-			case 1: printf("Creando el proceso %d \n", i); //piensa si mejor int o char //scanf("%s", &);
-					i++;
-					break;
-			case 2:
-					break;
-			case 3:	
-					vismem();//Llama la funcion Visualizar memoria
-					break;
-			case 4:
-					printf("Menu\n");
-					printf("1 Mapa de Bits");
-					printf("2 Lista libres");
-					scanf("%d",&op);
-					switch(op){
-						case 1:
-								mapits();//Llama a función mapa de beats
-								break;
-						case 2: 
-								lises();//Llama a función Lista Libres
-								break;		
-					}
-					break;
-			case 5: 
-					break;
-			case 6:
-					break;				
-		}
-	}while(op!=6);
-	return;
-}
-
-
-void vismem(){
-
 }
 
 void mapits(){
