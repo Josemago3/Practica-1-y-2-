@@ -1,75 +1,74 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 /*programa que simula el funcionamiento de la memoria RAM
   Ortega Zitle Ariel
   Aguirre Olvera Jose Manuel
   Sistemas Operativos 2
   
-  Lo que hace el programa es simular la memoria ram.
-  Apartir de dos opciones donde la opción A) Solo tiene 4 opciones para el manejo de la ram y 
+  Lo que hace el programa es simular la memoria RAM.
+  Apartir de dos opciones donde la opción A) Solo tiene 4 opciones para el manejo de la RAM y 
   La opcion B) tiene 5 opciones, la opcion agregada a B) es la opcion de enviar archivos al disco
   a partir de la memoria RAM y de la RAM al disco.
   
   */
-//estrucutura para listas ligadas
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 #define maxr    80 //define el maximo de espacios en la memoria ram y HDD
 #define maxchar 12 //define el maximo de caracteres
 #define maxf    10 //define el maximo de filas
 #define maxc     8 //define el maximo de columnas 
 
-typedef struct nodo{
+typedef struct nodo{			 //Estructuta que define cada espacio de la ram
 	char nombreproceso[maxchar]; //Define el maximo de caracteres en el nombre del proceso
 	int empieza_tam;			 //Define en que espacio de la memoria inicia el proceso
 	int tam;					 //Define el tamaño de memoria que ocupara el proceso
 	int termina_tam;			 //Define en que espacio de la memoria termina el proceso
 	}nodo;
 
-typedef struct bus{
-	int ini;
-	int fin;
+typedef struct bus{				 //Estructura para regresar los valores del proceso buscado
+	int ini;					 //Define donde inicia el proceso buscado
+	int fin;					 //Define donde finaliza el proceso buscado 
 }bus;	
 
-nodo ram[maxr];
+nodo ram[maxr];										  //Crea un arreglo de 80 espacios que repesenta la RAM
 int  mapabits[maxf][maxc], hdd[maxr], np=0 , total=0; //np=numero de proceso, hdd= Hard Drive Disc(Espacio del disco), total= es la suma de todos los procesos registrados
 
-void crear();
-void eliminar();
-bus busqueda(char nombre[maxchar]);
-void menu();
-void menuA();
-void menuB();
-void menuop3();
-void mapits();
-void lises();
+void crear();         					//Prototipo para la función crear proceso
+void eliminar();						//Prototipo para la función eliminar proceso
+bus busqueda(char nombre[maxchar]);		//Prototipo para la función busqueda de proceso
+void menu();							//Prototipo para la función menu principal
+void menuA();							//Prototipo para la función menu opción A
+void menuB();							//Prototipo para la función menu opción B
+void menuop3();							//Prototipo para la función submenu opción 3
+void mapits();							//Prototipo para la función representar mapa de bits
+void lises();							//Prototipo para la función representar listas libres
 
-int main(int argc, char const *argv[])
+int main(int argc, char const *argv[])  //Inicia el proceso
 {		
-	menu();
+	menu();								//Llama a la función del menu principal
 	return 0;
 }
 
 void crear(){
-	char c[3], p[]="proceso ";
+	char c[3], p[12]="proceso ";
 	int i, j;
 
 	printf("Ingrese el tamaño del proceso: ");
 	scanf("%d",&ram[total].tam);
-	if ((total+ram[total].tam)<80){		 //Compara que el total mas el tamaño a ingresar no superen la memoria
-		sprintf(c, "%d", np+1);			 //convierte el numero de proceso a cadena
-		strcat(p, c);                    //concatena las cadenas proceso + np;
-		strcpy(ram[total].nombreproceso, p);//copia la cadena que contiene el nombre del proceso al proceso
-		ram[total].empieza_tam=total;       //Le asigna el espacio en el que empieza la asignación de memoria al proceso
+	if ((total+ram[total].tam)<=80){		 			//Compara que el total mas el tamaño a ingresar no superen la memoria
+		sprintf(c, "%d", np+1);			 				//convierte el numero de proceso a cadena
+		strcat(p, c);                    				//concatena las cadenas proceso + np;
+		strcpy(ram[total].nombreproceso, p);			//copia la cadena que contiene el nombre del proceso al proceso
+		ram[total].empieza_tam=total;       			//Le asigna el espacio en el que empieza la asignación de memoria al proceso
 		ram[total].termina_tam=total+ram[total].tam-1;	//Le asigna el espacio en el que termina la asignación de memoria al proceso
-		printf("n: %s et: %d t: %d tt: %d creado\n", ram[total].nombreproceso,ram[total].empieza_tam,ram[total].tam,ram[total].termina_tam); //piensa si mejor int o char //scanf("%s", &);
-		for(i= total+1; i < total+ram[total].tam; i++){	 //El for se utiliza, cuando el tamaño del proceso es mayor a uno, lo cual hace que haga las asignaciones necesarias.
-			strcpy(ram[i].nombreproceso, p);         //copia la cadena que contiene el nombre del proceso al proceso
-			ram[i].empieza_tam=total;				 //Le asigna el espacio en el que empieza la asignación de memoria al proceso
-			ram[i].tam=ram[total].tam;					 //Le asigna el espacio asignado de memoria al proceso
+		for(i= total+1; i < total+ram[total].tam; i++){	//El for se utiliza, cuando el tamaño del proceso es mayor a uno, lo cual hace que haga las asignaciones necesarias.
+			strcpy(ram[i].nombreproceso, p);         	//copia la cadena que contiene el nombre del proceso al proceso
+			ram[i].empieza_tam=total;				 	//Le asigna el espacio en el que empieza la asignación de memoria al proceso
+			ram[i].tam=ram[total].tam;					//Le asigna el espacio asignado de memoria al proceso
 			ram[i].termina_tam=total+ram[total].tam-1;  //Le asigna el espacio en el que termina la asignación de memoria al proceso
-			printf("n: %s et: %d t: %d tt: %d creado\n", ram[i].nombreproceso,ram[i].empieza_tam,ram[i].tam,ram[i].termina_tam); //piensa si mejor int o char //scanf("%s", &);
-		}		
+		}
+		printf("n: %s et: %d t: %d tt: %d creado\n", ram[total].nombreproceso,ram[total].empieza_tam,ram[total].tam,ram[total].termina_tam); //Imprime el proceso creado con sus variables asignadas		
 		total+=ram[total].tam;
 		np++;
 	}
@@ -80,12 +79,12 @@ void crear(){
 }
 
 void eliminar(){
-	struct bus busq;
-	char nombre[maxchar];
-	getchar();
+	struct bus busq;			//Variable para el proceso buscado
+	char nombre[maxchar];		//Variable para leer el prceso a buscar
+	getchar();					//Sirve para limpiar la basura del teclado
 	printf("Nombre del proceso a eliminar (Maximo 10 caracteres): ");
-	fgets(nombre, 12, stdin);
-	busq=busqueda(nombre);
+	gets(nombre);				//Lee el proceso a buscar
+	busq=busqueda(nombre);		//Llama la funcion para buscar el nombre, la cual regresa una estructura
 	for(busq.ini; busq.ini < busq.fin; busq.ini++){
 		printf("n: %s et: %d t: %d tt: %d creado\n", ram[busq.ini].nombreproceso,ram[busq.ini].empieza_tam,ram[busq.ini].tam,ram[busq.ini].termina_tam); //piensa si mejor int o char //scanf("%s", &);
 	}
@@ -93,17 +92,14 @@ void eliminar(){
 }
 
 bus busqueda(char nombre[maxchar]){
-	bus bu;
-	int i;
+	bus bu;  		//Crea una variables de tipo estructura bus para almacenar el proceso cuando lo encuentre
+	int i;			
 	printf("%s\n", nombre);
-	strcat(nombre, "\n");
-	for(i=0;i<total;i++){
-		printf("n: %d creado\n", strcmp(ram[i].nombreproceso,nombre));
-		if( strcmp(ram[i].nombreproceso,nombre)==0){
-			bu.ini=ram[i].empieza_tam;
-			bu.fin=ram[i].termina_tam;
-			printf("i:%d, f:%d", bu.ini, bu.fin);
-			return bu;
+	for(i=0;i<total;i++){							  //Busca en todos los procesos disponibles
+		if( strcmp(ram[i].nombreproceso,nombre)==0){  //Compara el nombre del proceso [i], con el proceso a buscar para ver si son iguales
+			bu.ini=ram[i].empieza_tam;				  //Le asigna el inicio del proceso en la ram 
+			bu.fin=ram[i].termina_tam;				  //Le asigna el fin del proceso en la ram
+			return bu;								  //Regresa la estructura para utilizarla en la funcion que hizo el llamado
 		}
 	}
 }
